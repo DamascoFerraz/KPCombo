@@ -41,3 +41,5 @@ class Player(pygame.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom >= config.height:
             self.rect.bottom = config.height
+    
+        

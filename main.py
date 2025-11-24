@@ -14,6 +14,9 @@ player = Player()
 # - enemies
 from scripts.enemies import *
 
+# - rooms
+from scripts.rooms import *
+
 #endregion ################# imports  #################
 
 #region ################# definição inicial  #################
@@ -57,6 +60,7 @@ while running:
             new_enemy = Enemy()
             enemies.add(new_enemy)
             all_sprites.add(new_enemy)
+        
 
     # detecta pressionar de teclas 
     pressed_keys = pygame.key.get_pressed()
@@ -68,6 +72,8 @@ while running:
     player.update(pressed_keys)
 
     enemies.update()
+
+    all_sprites.add(blocks)
 
     #endregion ################# atualizar obj  #################
 
@@ -82,7 +88,12 @@ while running:
         screen.blit(entity.surf, entity.rect)
 
     # atualiza a tela
+        
+    drawRoom(rooms["1"])
+
     pygame.display.flip()
+
+
 
     #endregion ################# desenhar tela #################
 
