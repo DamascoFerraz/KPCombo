@@ -18,4 +18,9 @@ class Enemy(pygame.sprite.Sprite):
                 random.randint(0, config.height),
             )
         )
-        
+        self.speed = random.randint(5,10)
+    def update(self):
+        self.rect.move_ip(-self.speed , 0)
+
+        if self.rect.right < 0:
+            self.kill

@@ -11,6 +11,9 @@ config = Config()
 from scripts.player import *
 player = Player()
 
+# - enemies
+from scripts.enemies import *
+
 #endregion ################# imports  #################
 
 #region ################# definição inicial  #################
@@ -21,6 +24,15 @@ pygame.display.set_caption(config.title)
 
 # define variavel de execução
 running = True
+
+# sprites
+enemies = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group()
+all_sprites.add(player)
+
+# evento de criação de inimigo
+ADDENEMY = pygame.USEREVENT + 1
+pygame.time.set_timer(ADDENEMY,250)
 
 #endregion ################# definição inicial  #################
 
@@ -41,6 +53,11 @@ while running:
             if event.key == K_ESCAPE:
                 running = False
 
+        if event.type == ADDENEMY:
+            new_enemy = Enemy()
+            enemies.add(new_enemy)
+            all_sprites.add(new_enemy)
+
     # detecta pressionar de teclas 
     pressed_keys = pygame.key.get_pressed()
 
@@ -50,6 +67,8 @@ while running:
 
     player.update(pressed_keys)
 
+    enemies.update()
+
     #endregion ################# atualizar obj  #################
 
 
@@ -58,14 +77,30 @@ while running:
     # preenche a tela com a cor de fundo
     screen.fill(config.bg_color)
 
-    # desenha o player na tela
-    screen.blit(player.surf, player.rect)
+    # desenha entidades na tela
+    for entity in all_sprites:
+        screen.blit(entity.surf, entity.rect)
 
     # atualiza a tela
     pygame.display.flip()
 
     #endregion ################# desenhar tela #################
 
+    #region ################# detectar colisões #################
+    
+    if pygame.sprite.spritecollideany(player,enemies):
+        player.kill()
+        running = False
+    
+    #endregion ################# detectar colisões #################
+    
+    #region ################# dinamic config #################
+    
+    clock = pygame.time.Clock()
+    clock.tick(30)
+    
+    #endregion ################# dinamic config #################
+    
     
 
 # para a execução do codigo
